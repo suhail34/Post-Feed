@@ -16,6 +16,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Tooltip } from '@mui/material';
 import AuthContext from './AuthContext';
 import axios from 'axios';
+import PostContext from './PostContext';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,6 +63,7 @@ export default function PAppBar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const { logout } = React.useContext(AuthContext);
+  const { setPost } = React.useContext(PostContext);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -97,6 +99,18 @@ export default function PAppBar() {
     } catch (err) {
       console.error(err);
     }
+  }
+
+  const handleInput = async (e) => {
+    e.preventDefault();
+    let text = e.target.value;
+    await axios.get(`http://localhost:8080/api/post/search?q=${text}`, {withCredentials:true})
+    .then((resp)=>{
+      setPost(resp.data['result']);
+    })
+    .catch(err => {
+      console.error(err);
+    })
   }
 
   const menuId = 'primary-search-account-menu';
@@ -154,8 +168,8 @@ export default function PAppBar() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box zIndex={'9'} sx={{ flexGrow: 1 }}>
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             size="large"
@@ -180,6 +194,7 @@ export default function PAppBar() {
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
+              onChange={handleInput}
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>

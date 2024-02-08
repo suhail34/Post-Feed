@@ -15,7 +15,6 @@ const handleErrors = (err) => {
 }
 
 const create_post = async (req, res) => {
-  console.log(req.body)
   const { username, content, comment } = req.body;
   try {
     let post;
@@ -49,4 +48,20 @@ const list_posts = async (req, res) => {
   }
 }
 
-module.exports = { create_post, list_posts };
+const search_posts = async (req, res) => {
+  const searchText = req.query['q'] || '';
+  Post.find({
+    $or: [
+      {username: { $regex: searchText, $options: 'i' }},
+      {content: {$regex: searchText, $options: 'i'}},
+    ]
+  })
+  .then(result => {
+    res.status(200).send({'result':result});
+  })
+  .catch(err=>{
+    res.status(500).send({error: err});
+  })
+}
+
+module.exports = { create_post, list_posts, search_posts };

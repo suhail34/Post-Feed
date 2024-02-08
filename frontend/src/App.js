@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { AuthContextProvider } from './components/AuthContext';
 import { PostContextProvider } from './components/PostContext';
@@ -13,10 +13,8 @@ function App() {
       <AuthContextProvider>
         <Routes>
           <Route path='/' element={
-            <ProtectedRoutes accessBy={"non-authenticated"}>
-              <div>My home</div>
-            </ProtectedRoutes>
-          } />
+            <Navigate to={'/post'} />
+          }/>
           <Route path="/login" element={
             <ProtectedRoutes accessBy={"non-authenticated"}>
               <Login/>

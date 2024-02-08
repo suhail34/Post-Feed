@@ -8,7 +8,6 @@ const Post = () => {
   const {post, setPost, list_post} = useContext(PostContext);
   useEffect(()=>{
     list_post()
-    console.log(post)
   },[]);
 
   return (

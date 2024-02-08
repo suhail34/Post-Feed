@@ -71,10 +71,8 @@ const signin_post = async (req, res) => {
       maxAge:1000*maxAge,
       httpOnly: true,
     }).send({"user": user.username});
-    console.log(token)
    } catch (err){
     const errors = handleErrors(err)
-    console.log(errors)
     res.status(400).json({error:errors})
    }
 }

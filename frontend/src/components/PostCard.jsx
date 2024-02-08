@@ -24,7 +24,6 @@ export default function PostCard({key, props}) {
     try {
       const resp = await axios.post('http://localhost:8080/api/post/create', payload, {withCredentials:true});
       console.log(resp);
-      props = resp['post'];
     } catch(err) {
       console.error(err);
     }
